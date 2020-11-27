@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+  environment {
+	CI_USER_TOKEN = credentials('SignPath.CIUserToken')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo "This step would build the artifact in build-output/putty.exe"
+      }
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts artifacts: "build-output/**", fingerprint: true
+      }
+    }
+    stage('Sign with SignPath') {
+      steps {
+        submitSigningRequest( 
+          ciUserToken: "${CI_USER_TOKEN}", 
+          organizationId: "${ORGANIZATION_ID}",
+          projectSlug: "EXE",
+          signingPolicySlug: "sync-signing",
+          inputArtifactPath: "build-output/putty.exe",
+          outputArtifactPath: "build-output/putty.signed.exe",
+          waitForCompletion: true
+        )
+      }
+    }
+  }
+}
