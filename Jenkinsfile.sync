@@ -17,7 +17,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest( 
-          ciUserToken: "${CI_USER_TOKEN}", 
+          ciUserToken: credentials('SignPath.CIUserToken'), 
           organizationId: "${ORGANIZATION_ID}",
           projectSlug: "EXE",
           signingPolicySlug: "sync-signing",
