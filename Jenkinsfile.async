@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-	CI_USER_TOKEN = credentials('SignPath.CIUserToken')
+	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
   }
   stages {
     stage('Build') {
