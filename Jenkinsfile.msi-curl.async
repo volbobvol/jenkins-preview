@@ -19,7 +19,7 @@ pipeline {
 			  -F "Artifact=@./build-output/installer.msi" \\
 			  https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests
 		  ''')
-		  def signingRequestURL = output.split('\n').find { it.startsWith('< Location:') }
+		  env.SIGNING_REQUEST_URL = output.split('\n').find { it.startsWith('< Location:') }
 		}
       }
     }
@@ -29,7 +29,7 @@ pipeline {
         message "Has the signing request completed?"
       }
       steps{
-        sh 'curl "${signingRequestUrl}/SignedArtifact" --output build-output/installer.signed.msi'
+        sh 'curl "${SIGNING_REQUEST_URL}/SignedArtifact" --output build-output/installer.signed.msi'
       }
     }
 	stage('Archive signed only') {
