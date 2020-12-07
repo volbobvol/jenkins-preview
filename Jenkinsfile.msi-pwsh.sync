@@ -9,22 +9,22 @@ pipeline {
         echo "This step would build the artifact in build-output/installer.msi"
       }
     }
-    stage('Archive') {
-      steps {
-        archiveArtifacts artifacts: "build-output/**", fingerprint: true
-      }
-    }
     stage('Sign with SignPath') {
       steps {
 		pwsh '''Submit-SigningRequest `
-		  -CIUserToken ${CI_USER_TOKEN} `
-		  -OrganizationId ${ORGANIZATION_ID} `
+		  -CIUserToken "${env:CI_USER_TOKEN}" `
+		  -OrganizationId "${env:ORGANIZATION_ID}" `
 		  -ProjectSlug "MSI" `
 		  -SigningPolicySlug "sync-signing" `
 		  -InputArtifactPath "build-output/installer.msi" `
 		  -OutputArtifactPath "build-output/installer.signed.msi" `
 		  -WaitForCompletion
 		'''
+      }
+    }
+	stage('Archive signed only') {
+      steps {
+        archiveArtifacts artifacts: "build-output/installer.signed.msi", fingerprint: true
       }
     }
   }
