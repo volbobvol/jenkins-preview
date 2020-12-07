@@ -1,0 +1,39 @@
+pipeline {
+  agent any
+  environment {
+	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo "This step would build the artifact in build-output/installer.msi"
+      }
+    }
+    stage('Sign with SignPath') {
+      steps {
+		def output = sh(returnStdout: true, script: '''Submit-SigningRequest `
+		  curl -v -H "Authorization: Bearer ${CI_USER_TOKEN}" \\
+		    -F "ProjectSlug=MSI" \\
+		    -F "SigningPolicySlug=async-signing" \\
+		    -F "Artifact=@./build-output/installer.msi" \\
+		    https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests
+		''')
+		def signingRequestURL = output.split('\n').find { it.startsWith('< Location:') }
+      }
+    }
+	stage('Download Signed Artifact') {
+      input {
+        id "WaitForSigningRequestCompleted"
+        message "Has the signing request completed?"
+      }
+      steps{
+        sh 'curl "${signingRequestUrl}/SignedArtifact" --output build-output/installer.signed.msi'
+      }
+    }
+	stage('Archive signed only') {
+      steps {
+        archiveArtifacts artifacts: "build-output/installer.signed.msi", fingerprint: true
+      }
+    }
+  }
+}
