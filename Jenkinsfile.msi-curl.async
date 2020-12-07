@@ -12,8 +12,8 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
 		script {
-		  def output = sh(returnStdout: true, script: '''Submit-SigningRequest `
-			curl -v -H "Authorization: Bearer ${CI_USER_TOKEN}" \\
+		  def output = sh(returnStdout: true, script: '''curl -v \\
+		      -H "Authorization: Bearer ${CI_USER_TOKEN}" \\
 			  -F "ProjectSlug=MSI" \\
 			  -F "SigningPolicySlug=async-signing" \\
 			  -F "Artifact=@./build-output/installer.msi" \\
