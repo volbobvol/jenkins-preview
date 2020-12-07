@@ -29,7 +29,7 @@ pipeline {
         message "Has the signing request completed?"
       }
       steps{
-        sh "curl -H "Authorization: Bearer ${CI_USER_TOKEN}" --output build-output/installer.signed.msi ${SIGNING_REQUEST_URL}/SignedArtifact"
+        sh "curl -H 'Authorization: Bearer ${CI_USER_TOKEN}' --output build-output/installer.signed.msi ${SIGNING_REQUEST_URL}/SignedArtifact"
       }
     }
 	stage('Archive signed only') {
