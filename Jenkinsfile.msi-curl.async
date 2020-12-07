@@ -12,7 +12,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
 		script {
-		  def output = sh(returnStdout: true, script: '''curl -v \\
+		  output = sh(returnStdout: true, script: '''curl -i \\
 		      -H "Authorization: Bearer ${CI_USER_TOKEN}" \\
 			  -F "ProjectSlug=MSI" \\
 			  -F "SigningPolicySlug=async-signing" \\
