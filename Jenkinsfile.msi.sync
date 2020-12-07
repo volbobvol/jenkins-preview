@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+  environment {
+	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo "This step would build the artifact in build-output/installer.msi"
+      }
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts artifacts: "build-output/**", fingerprint: true
+      }
+    }
+    stage('Sign with SignPath') {
+      steps {
+        submitSigningRequest( 
+          ciUserToken: "${CI_USER_TOKEN}", 
+          organizationId: "${ORGANIZATION_ID}",
+          projectSlug: "MSI",
+          signingPolicySlug: "sync-signing",
+          inputArtifactPath: "build-output/installer.msi",
+          outputArtifactPath: "build-output/installer.signed.msi",
+          waitForCompletion: true
+        )
+      }
+    }
+  }
+}
