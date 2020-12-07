@@ -16,7 +16,7 @@ pipeline {
     }
     stage('Sign with SignPath') {
       steps {
-		powershell '''Submit-SigningRequest
+		pwsh '''Submit-SigningRequest
 		  -CIUserToken ${CI_USER_TOKEN}
 		  -OrganizationId ${ORGANIZATION_ID}
 		  -ProjectSlug "MSI"
