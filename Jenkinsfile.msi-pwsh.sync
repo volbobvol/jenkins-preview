@@ -16,13 +16,13 @@ pipeline {
     }
     stage('Sign with SignPath') {
       steps {
-		pwsh '''Submit-SigningRequest
-		  -CIUserToken ${CI_USER_TOKEN}
-		  -OrganizationId ${ORGANIZATION_ID}
-		  -ProjectSlug "MSI"
-		  -SigningPolicySlug "sync-signing"
-		  -InputArtifactPath "build-output/installer.msi"
-		  -OutputArtifactPath "build-output/installer.signed.msi"
+		pwsh '''Submit-SigningRequest `
+		  -CIUserToken ${CI_USER_TOKEN} `
+		  -OrganizationId ${ORGANIZATION_ID} `
+		  -ProjectSlug "MSI" `
+		  -SigningPolicySlug "sync-signing" `
+		  -InputArtifactPath "build-output/installer.msi" `
+		  -OutputArtifactPath "build-output/installer.signed.msi" `
 		  -WaitForCompletion
 		'''
       }
