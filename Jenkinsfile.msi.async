@@ -18,6 +18,7 @@ pipeline {
       steps {
         script {
           signingRequestId = submitSigningRequest( 
+            apiUrl: "{API_URL}",
             ciUserToken: "${CI_USER_TOKEN}", 
             organizationId: "${ORGANIZATION_ID}",
             projectSlug: "MSI",
@@ -35,7 +36,8 @@ pipeline {
         message "Has the signing request completed?"
       }
       steps{
-        getSignedArtifact( 
+        getSignedArtifact(          
+          apiUrl: "${API_URL}",
           ciUserToken: "${CI_USER_TOKEN}", 
           organizationId: "${ORGANIZATION_ID}",
           signingRequestId: "${signingRequestId}",

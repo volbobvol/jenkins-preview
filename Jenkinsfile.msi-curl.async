@@ -17,7 +17,7 @@ pipeline {
 			  -F "ProjectSlug=MSI" \\
 			  -F "SigningPolicySlug=async-signing" \\
 			  -F "Artifact=@./build-output/installer.msi" \\
-			  https://app.signpath.io/API/v1/${ORGANIZATION_ID}/SigningRequests
+			  ${API_URL}/v1/${ORGANIZATION_ID}/SigningRequests
 		  ''').trim()
 		  env.SIGNING_REQUEST_URL = output.split('\n').find { it.startsWith('Location:') }.substring('Location: '.length()).trim()
 		}

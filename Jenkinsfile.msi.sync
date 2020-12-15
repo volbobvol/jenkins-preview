@@ -17,6 +17,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest( 
+          apiUrl: "${API_URL}",
           ciUserToken: "${CI_USER_TOKEN}", 
           organizationId: "${ORGANIZATION_ID}",
           projectSlug: "MSI",

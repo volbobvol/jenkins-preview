@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+    CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
   }
   stages {
     stage('Build') {
@@ -16,7 +16,8 @@ pipeline {
     }
     stage('Sign with SignPath') {
       steps {
-        submitSigningRequest( 
+        submitSigningRequest(
+          apiUrl: "${API_URL}",
           ciUserToken: "${CI_USER_TOKEN}", 
           organizationId: "${ORGANIZATION_ID}",
           projectSlug: "EXE",
