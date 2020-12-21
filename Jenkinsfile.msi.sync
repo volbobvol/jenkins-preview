@@ -1,7 +1,11 @@
 pipeline {
   agent any
   environment {
-	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+    CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+  }
+  parameters {
+    string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
+    string(name: 'ORGANIZATION_ID', defaultValue: '')
   }
   stages {
     stage('Build') {
@@ -17,9 +21,9 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest( 
-          apiUrl: "${API_URL}",
+          apiUrl: "${params.API_URL}",
           ciUserToken: "${CI_USER_TOKEN}", 
-          organizationId: "${ORGANIZATION_ID}",
+          organizationId: "${params.ORGANIZATION_ID}",
           projectSlug: "MSI",
           signingPolicySlug: "sync-signing",
           inputArtifactPath: "build-output/installer.msi",
