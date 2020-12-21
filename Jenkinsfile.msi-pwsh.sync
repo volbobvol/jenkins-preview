@@ -12,6 +12,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
 		pwsh '''Submit-SigningRequest `
+      -ApiUrl "${env:API_URL}", `
 		  -CIUserToken "${env:CI_USER_TOKEN}" `
 		  -OrganizationId "${env:ORGANIZATION_ID}" `
 		  -ProjectSlug "MSI" `

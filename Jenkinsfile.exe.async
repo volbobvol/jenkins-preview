@@ -1,7 +1,10 @@
 pipeline {
   agent any
-  environment {
-	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+  parameters {
+    string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
+    string(name: 'ORGANIZATION_ID', defaultValue: '')
+    string(name: 'CI_USER_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.CIUserToken')
+    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.TrustedBuildSystemToken')
   }
   stages {
     stage('Build') {
@@ -18,12 +21,13 @@ pipeline {
       steps {
         script {
           signingRequestId = submitSigningRequest( 
-            ciUserToken: "${CI_USER_TOKEN}", 
-            organizationId: "${ORGANIZATION_ID}",
+            apiUrl: "${params.API_URL}",
+            organizationId: "${params.ORGANIZATION_ID}",
+            ciUserTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
+            trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
             projectSlug: "EXE",
             signingPolicySlug: "async-signing",
             inputArtifactPath: "build-output/putty.exe",
-			outputArtifactPath: "dummy-output/why.exe",
             waitForCompletion: false
           )
         }
@@ -36,8 +40,10 @@ pipeline {
       }
       steps{
         getSignedArtifact( 
-          ciUserToken: "${CI_USER_TOKEN}", 
-          organizationId: "${ORGANIZATION_ID}",
+          apiUrl: "${params.API_URL}",
+          organizationId: "${params.ORGANIZATION_ID}",
+          ciUserTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
+          trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           signingRequestId: "${signingRequestId}",
           outputArtifactPath: "build-output/putty.signed.exe"
         )
