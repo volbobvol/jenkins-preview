@@ -6,6 +6,7 @@ Preview sample of Jenkins CIConnector
   * Create a CI User
   * Create a TBS
   * Create a Project `EXE` for a .exe file 
+  * Link the TBS in the project
   * Add a signing policy `sync-signing` with the CI user as submitter
   * Add a signing policy `async-signing` with the CI user as submitter and approval process
 2. Start a jenkins server with Powershell and PowerShell Module available
