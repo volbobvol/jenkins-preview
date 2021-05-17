@@ -14,7 +14,7 @@ pipeline {
     }
     stage('Archive') {
       steps {
-        archiveArtifacts artifacts: "build-output/**", fingerprint: true
+        archiveArtifacts artifacts: "build-output/unsigned/installer.msi", fingerprint: true
       }
     }
     stage('Sign with SignPath') {
