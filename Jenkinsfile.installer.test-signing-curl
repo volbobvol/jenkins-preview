@@ -1,12 +1,12 @@
 pipeline {
   agent any
   environment {
-	CI_USER_TOKEN = credentials('SignPath.ProjectX.CIUserToken')
+	CI_USER_TOKEN = credentials('SignPath.InstallerProject.CIUserToken')
   }
   stages {
     stage('Build') {
       steps {
-        echo "This step would build the artifact in build-output/installer.msi"
+        echo "This step would build the artifact in build-output/unsigned/installer.msi"
       }
     }
     stage('Sign with SignPath') {
@@ -14,9 +14,9 @@ pipeline {
 		script {
 		  output = sh(returnStdout: true, script: '''curl -i \\
 		      -H "Authorization: Bearer ${CI_USER_TOKEN}" \\
-			  -F "ProjectSlug=MSI" \\
-			  -F "SigningPolicySlug=async-signing" \\
-			  -F "Artifact=@./build-output/installer.msi" \\
+			  -F "ProjectSlug=installer" \\
+			  -F "SigningPolicySlug=release-signing" \\
+			  -F "Artifact=@./build-output/unsigned/installer.msi" \\
 			  ${API_URL}/v1/${ORGANIZATION_ID}/SigningRequests
 		  ''').trim()
 		  env.SIGNING_REQUEST_URL = output.split('\n').find { it.startsWith('Location:') }.substring('Location: '.length()).trim()
@@ -29,12 +29,12 @@ pipeline {
         message "Has the signing request completed?"
       }
       steps{
-        sh "curl -H 'Authorization: Bearer ${CI_USER_TOKEN}' --output build-output/installer.signed.msi ${SIGNING_REQUEST_URL}/SignedArtifact"
+        sh "curl -H 'Authorization: Bearer ${CI_USER_TOKEN}' --output build-output/signed/installer.msi ${SIGNING_REQUEST_URL}/SignedArtifact"
       }
     }
 	stage('Archive signed only') {
       steps {
-        archiveArtifacts artifacts: "build-output/installer.signed.msi", fingerprint: true
+        archiveArtifacts artifacts: "build-output/signed/installer.msi", fingerprint: true
       }
     }
   }

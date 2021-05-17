@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+  environment {
+	CI_USER_TOKEN = credentials('SignPath.InstallerProject.CIUserToken')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo "This step would build the artifact in build-output/unsigned/installer.msi"
+      }
+    }
+    stage('Sign with SignPath') {
+      steps {
+		pwsh '''Submit-SigningRequest `
+      -ApiUrl "${env:API_URL}", `
+		  -CIUserToken "${env:CI_USER_TOKEN}" `
+		  -OrganizationId "${env:ORGANIZATION_ID}" `
+		  -ProjectSlug "installer" `
+		  -SigningPolicySlug "test-signing" `
+		  -InputArtifactPath "build-output/unsigned/installer.msi" `
+		  -OutputArtifactPath "build-output/signed/installer.msi" `
+		  -WaitForCompletion
+		'''
+      }
+    }
+	stage('Archive signed only') {
+      steps {
+        archiveArtifacts artifacts: "build-output/signed/installer.msi", fingerprint: true
+      }
+    }
+  }
+}

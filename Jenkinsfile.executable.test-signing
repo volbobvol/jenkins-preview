@@ -3,13 +3,13 @@ pipeline {
   parameters {
     string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
     string(name: 'ORGANIZATION_ID', defaultValue: '')
-    string(name: 'CI_USER_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.CIUserToken')
+    string(name: 'CI_USER_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.CIUserToken')
     string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.TrustedBuildSystemToken')
   }
   stages {
     stage('Build') {
       steps {
-        echo "This step would build the artifact in build-output/installer.msi"
+        echo "This step would build the artifact in build-output/unsigned/executable.exe"
       }
     }
     stage('Archive') {
@@ -19,15 +19,15 @@ pipeline {
     }
     stage('Sign with SignPath') {
       steps {
-        submitSigningRequest( 
+        submitSigningRequest(
           apiUrl: "${params.API_URL}",
           organizationId: "${params.ORGANIZATION_ID}",
           ciUserTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
-          projectSlug: "MSI",
-          signingPolicySlug: "sync-signing",
-          inputArtifactPath: "build-output/installer.msi",
-          outputArtifactPath: "build-output/installer.signed.msi",
+          projectSlug: "executable",
+          signingPolicySlug: "test-signing",
+          inputArtifactPath: "build-output/unsigned/executable.exe",
+          outputArtifactPath: "build-output/signed/executable.exe",
           waitForCompletion: true
         )
       }
