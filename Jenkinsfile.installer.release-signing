@@ -21,7 +21,7 @@ pipeline {
       steps {
         script {
           signingRequestId = submitSigningRequest( 
-            apiUrl: "{params.API_URL}",
+            apiUrl: "${params.API_URL}",
             organizationId: "${params.ORGANIZATION_ID}",
             ciUserTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
             trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
