@@ -1,4 +1,4 @@
-Preview sample of Jenkins CIConnector
+Preview sample of [Jenkins SignPath Plugin](https://github.com/jenkinsci/signpath-plugin/)
 
 # Preparation
 
