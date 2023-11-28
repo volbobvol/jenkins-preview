@@ -9,7 +9,7 @@ Preview sample of [Jenkins SignPath Plugin](https://github.com/jenkinsci/signpat
   * Link the TBS in the project
   * Add a signing policy `test-signing` with the CI user as submitter
   * Add a signing policy `release-signing` with the CI user as submitter and approval process
-2. Start a jenkins server with Powershell and PowerShell Module available
+2. Start a jenkins server with the SignPath Plugin installed
 
 # Demo
 
