@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-#        sh 'curl https://www.rubicon.eu/downloads/ea2b8678-cdb3-46a8-8bb4-cc9184e42ae9/1GB.exe --output build-output/unsigned/large.exe'
+//        sh 'curl https://www.rubicon.eu/downloads/ea2b8678-cdb3-46a8-8bb4-cc9184e42ae9/1GB.exe --output build-output/unsigned/large.exe'
         sh 'curl https://www.rubicon.eu/downloads/b87f27ab-c8db-4d0e-8e75-2a9d5c5fa892/35MB.exe --output build-output/unsigned/large.exe'
       }
     }
