@@ -9,12 +9,13 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'curl https://www.rubicon.eu/downloads/ea2b8678-cdb3-46a8-8bb4-cc9184e42ae9/1GB.exe --output build-output/unsigned/1GB.exe'
+#        sh 'curl https://www.rubicon.eu/downloads/ea2b8678-cdb3-46a8-8bb4-cc9184e42ae9/1GB.exe --output build-output/unsigned/large.exe'
+        sh 'curl https://www.rubicon.eu/downloads/b87f27ab-c8db-4d0e-8e75-2a9d5c5fa892/35MB.exe --output build-output/unsigned/large.exe'
       }
     }
     stage('Archive') {
       steps {
-        archiveArtifacts artifacts: "build-output/unsigned/1GB.exe", fingerprint: true
+        archiveArtifacts artifacts: "build-output/unsigned/large.exe", fingerprint: true
       }
     }
     stage('Sign with SignPath') {
@@ -26,8 +27,8 @@ pipeline {
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "executable",
           signingPolicySlug: "test-signing",
-          inputArtifactPath: "build-output/unsigned/1GB.exe",
-          outputArtifactPath: "build-output/signed/1GB.exe",
+          inputArtifactPath: "build-output/unsigned/large.exe",
+          outputArtifactPath: "build-output/signed/large.exe",
           waitForCompletion: true
         )
       }
