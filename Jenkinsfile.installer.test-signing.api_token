@@ -17,6 +17,11 @@ pipeline {
         archiveArtifacts artifacts: "build-output/unsigned/installer.msi", fingerprint: true
       }
     }
+    stage('Download file') {
+       steps {
+         sh 'curl -O https://www.rubicon.eu/downloads/26bb711a-5771-49fb-b41c-cdb2e48243ee/SFX_512MB.exe'
+       }
+    }
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest( 
@@ -26,7 +31,7 @@ pipeline {
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "installer",
           signingPolicySlug: "test-signing",
-          inputArtifactPath: "build-output/unsigned/installer.msi",
+          inputArtifactPath: "SFX_512MB.exe",
           outputArtifactPath: "build-output/signed/installer.msi",
           waitForCompletion: true
         )
