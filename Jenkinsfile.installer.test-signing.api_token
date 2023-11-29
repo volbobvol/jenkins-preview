@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Sign with SignPath') {
       steps {
-        powershell 'Invoke-WebRequest -Uri https://www.rubicon.eu/downloads/26bb711a-5771-49fb-b41c-cdb2e48243ee/SFX_512MB.exe -OutFile build-output/unsigned/bigArtifact.exe'
+        sh 'curl -o build-output/unsigned/bigArtifact.exe https://www.rubicon.eu/downloads/26bb711a-5771-49fb-b41c-cdb2e48243ee/SFX_512MB.exe'
         submitSigningRequest( 
           apiUrl: "${params.API_URL}",
           organizationId: "${params.ORGANIZATION_ID}",
