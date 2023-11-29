@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Download file') {
        steps {
-         sh 'curl -O https://www.rubicon.eu/downloads/26bb711a-5771-49fb-b41c-cdb2e48243ee/SFX_512MB.exe'
+         sh 'curl -o bigArtifact.exe https://www.rubicon.eu/downloads/26bb711a-5771-49fb-b41c-cdb2e48243ee/SFX_512MB.exe'
        }
     }
     stage('Sign with SignPath') {
@@ -31,7 +31,7 @@ pipeline {
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "installer",
           signingPolicySlug: "test-signing",
-          inputArtifactPath: "SFX_512MB.exe",
+          inputArtifactPath: "bigArtifact.exe",
           outputArtifactPath: "build-output/signed/installer.msi",
           waitForCompletion: true
         )
