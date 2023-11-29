@@ -1,0 +1,36 @@
+pipeline {
+  agent any
+  parameters {
+    string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
+    string(name: 'ORGANIZATION_ID', defaultValue: '')
+    string(name: 'CI_USER_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.InstallerProject.CIUserToken')
+    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.TrustedBuildSystemToken')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo "This step would build the artifact in build-output/unsigned/installer.msi"
+      }
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts artifacts: "build-output/unsigned/installer.msi", fingerprint: true
+      }
+    }
+    stage('Sign with SignPath') {
+      steps {
+        submitSigningRequest( 
+          apiUrl: "${params.API_URL}",
+          organizationId: "${params.ORGANIZATION_ID}",
+          apiTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
+          trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
+          projectSlug: "installer",
+          signingPolicySlug: "test-signing",
+          inputArtifactPath: "build-output/unsigned/installer.msi",
+          outputArtifactPath: "build-output/signed/installer.msi",
+          waitForCompletion: true
+        )
+      }
+    }
+  }
+}
