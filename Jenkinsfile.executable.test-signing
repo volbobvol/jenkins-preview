@@ -31,7 +31,9 @@ pipeline {
           signingPolicySlug: "test-signing",
           inputArtifactPath: "build-output/unsigned/large.exe",
           outputArtifactPath: "build-output/signed/large.exe",
-          waitForCompletion: true
+          waitForCompletion: true,
+          uploadAndDownloadRequestTimeoutInSeconds: 1200,
+          waitForCompletionTimeoutInSeconds: 3000
         )
       }
     }
