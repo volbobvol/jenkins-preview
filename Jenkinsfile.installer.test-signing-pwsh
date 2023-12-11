@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-	CI_USER_TOKEN = credentials('SignPath.InstallerProject.CIUserToken')
+	API_TOKEN = credentials('SignPath.InstallerProject.ApiToken')
   }
   stages {
     stage('Build') {
@@ -13,7 +13,7 @@ pipeline {
       steps {
 		pwsh '''Submit-SigningRequest `
       -ApiUrl "${env:API_URL}", `
-		  -CIUserToken "${env:CI_USER_TOKEN}" `
+		  -ApiToken "${env:API_TOKEN}" `
 		  -OrganizationId "${env:ORGANIZATION_ID}" `
 		  -ProjectSlug "installer" `
 		  -SigningPolicySlug "test-signing" `
