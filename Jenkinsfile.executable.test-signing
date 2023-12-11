@@ -3,18 +3,21 @@ pipeline {
   parameters {
     string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
     string(name: 'ORGANIZATION_ID', defaultValue: '')
-    string(name: 'CI_USER_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.CIUserToken')
+    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')
     string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.TrustedBuildSystemToken')
   }
   stages {
     stage('Build') {
       steps {
-        echo "This step would build the artifact in build-output/unsigned/executable.exe"
+//        sh 'curl https://www.rubicon.eu/downloads/ea2b8678-cdb3-46a8-8bb4-cc9184e42ae9/1GB.exe --output build-output/unsigned/large.exe'
+//        sh 'curl https://www.rubicon.eu/downloads/b87f27ab-c8db-4d0e-8e75-2a9d5c5fa892/35MB.exe --output build-output/unsigned/large.exe'
+//        sh 'curl https://www.rubicon.eu/downloads/a6c9dffc-b2df-46c5-948b-4aa03a1c3c2a/100MB.exe --output build-output/unsigned/large.exe'
+        sh 'curl https://www.rubicon.eu/downloads/03290c6c-4f39-4588-b2bb-f89df6cd00cc/250MB.exe --output build-output/unsigned/large.exe'
       }
     }
     stage('Archive') {
       steps {
-        archiveArtifacts artifacts: "build-output/unsigned/executable.exe", fingerprint: true
+        archiveArtifacts artifacts: "build-output/unsigned/large.exe", fingerprint: true
       }
     }
     stage('Sign with SignPath') {
@@ -22,12 +25,12 @@ pipeline {
         submitSigningRequest(
           apiUrl: "${params.API_URL}",
           organizationId: "${params.ORGANIZATION_ID}",
-          ciUserTokenCredentialId: "${params.CI_USER_TOKEN_CREDENTIAL_ID}", 
+          apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}", 
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "executable",
           signingPolicySlug: "test-signing",
-          inputArtifactPath: "build-output/unsigned/executable.exe",
-          outputArtifactPath: "build-output/signed/executable.exe",
+          inputArtifactPath: "build-output/unsigned/large.exe",
+          outputArtifactPath: "build-output/signed/large.exe",
           waitForCompletion: true
         )
       }
