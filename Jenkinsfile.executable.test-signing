@@ -31,10 +31,10 @@ pipeline {
           waitForCompletion: true,
           uploadAndDownloadRequestTimeoutInSeconds: 1200,
           waitForCompletionTimeoutInSeconds: 3000,
-          parameters: {
-            param1: "value1"
-            param2: "value2"
-          }
+          parameters: [
+            { param1: "value1" }
+            { param2: "value2" }
+          ]
         )
       }
     }
