@@ -2,8 +2,8 @@ pipeline {
   agent any
   parameters {
     string(name: 'API_URL')
-    string(name: 'ORGANIZATION_ID', defaultValue: '')
-    string(name: 'API_TOKEN_CREDENTIAL_ID')
+    string(name: 'ORGANIZATION_ID')
+    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')
     string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID')
   }
   stages {
