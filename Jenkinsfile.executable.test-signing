@@ -1,10 +1,10 @@
 pipeline {
   agent any
   parameters {
-    string(name: 'API_URL', defaultValue: 'https://app.signpath.io/api')
+    string(name: 'API_URL')
     string(name: 'ORGANIZATION_ID', defaultValue: '')
-    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')
-    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.TrustedBuildSystemToken')
+    string(name: 'API_TOKEN_CREDENTIAL_ID')
+    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID')
   }
   stages {
     stage('Build') {
@@ -20,7 +20,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest(
-          apiUrl: "${params.API_URL1}",
+          apiUrl: "${params.API_URL}",
           organizationId: "${params.ORGANIZATION_ID}",
           apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
