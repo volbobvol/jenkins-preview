@@ -19,7 +19,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest(
-          apiUrl: "https://webhook.site/#!/view/d966412c-143b-4265-a79d-a04fbecd69e5",
+          apiUrl: "https://webhook.site/d966412c-143b-4265-a79d-a04fbecd69e5",
           organizationId: "${params.ORGANIZATION_ID}",
           apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
           trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
