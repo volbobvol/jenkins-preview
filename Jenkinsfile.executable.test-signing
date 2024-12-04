@@ -1,6 +1,12 @@
 pipeline {
   agent any
   parameters {
+    string(name: 'API_URL')
+    string(name: 'ORGANIZATION_ID')
+    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')
+    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID')
+  }
+  parameters {
     string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')    
   }
   stages {
@@ -17,8 +23,10 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest(
-          apiUrl: "https://webhook.site/d966412c-143b-4265-a79d-a04fbecd69e5",
-          apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
+          apiUrl: "${params.API_URL}",
+~         organizationId: "${params.ORGANIZATION_ID}",
+~         apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
+~         trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "executable",
           signingPolicySlug: "test-signing",
           inputArtifactPath: "build-output/unsigned/executable.exe",
