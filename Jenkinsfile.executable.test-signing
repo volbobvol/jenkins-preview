@@ -2,8 +2,7 @@ pipeline {
   agent any
   parameters {
     string(name: 'ORGANIZATION_ID')
-    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')
-    string(name: 'TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID')
+    string(name: 'API_TOKEN_CREDENTIAL_ID', defaultValue: 'SignPath.ExecutableProject.ApiToken')    
   }
   stages {
     stage('Build') {
@@ -21,7 +20,6 @@ pipeline {
         submitSigningRequest(
           organizationId: "${params.ORGANIZATION_ID}",
           apiTokenCredentialId: "${params.API_TOKEN_CREDENTIAL_ID}",
-          trustedBuildSystemTokenCredentialId: "${params.TRUSTED_BUILD_SYSTEM_TOKEN_CREDENTIAL_ID}",
           projectSlug: "executable",
           signingPolicySlug: "test-signing",
           inputArtifactPath: "build-output/unsigned/executable.exe",
